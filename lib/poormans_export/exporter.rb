@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require 'csv'
+require 'spreadsheet'
+
 module PoormansExport
   class Exporter
-    def initialize(collection, fields, headers)
+    def initialize(collection, fields, headers = [])
       @collection = collection
       @head = []
       @fields = []
@@ -53,7 +55,7 @@ module PoormansExport
       csv_string
     end
 
-    def excel_string(params = {})
+    def xls_string(params = {})
       template_path = params[:template]
       start_on_row = params[:start_on_row] || 0
       formats = params[:formats] || { 0 => { weight: :bold } }
@@ -61,9 +63,9 @@ module PoormansExport
       workbook = params[:workbook]
       workbook ||=
         if template_path.present?
-          Spreadsheet.open(template_path)
+          ::Spreadsheet.open(template_path)
         else
-          Spreadsheet::Workbook.new
+          ::Spreadsheet::Workbook.new
         end
       sheet = template_path ? workbook.worksheet(0) : workbook.create_worksheet
       sheet.name = params[:sheet_name] if params[:sheet_name]
@@ -80,8 +82,7 @@ module PoormansExport
           sheet.row(current_row).concat [@headers[0]]
           current_row += 1
         end
-        now = I18n.l(Time.zone.now, format: :compact)
-        sheet.row(current_row).concat ["#{I18n.t(:export_time)}: #{now}"]
+        sheet.row(current_row).concat [I18n.l(Time.zone.now, format: :compact)]
         current_row += 1
         if @headers[1]
           sheet.row(current_row).concat [@headers[1]]
@@ -135,7 +136,7 @@ module PoormansExport
         end
       end
 
-      if params[:fmt] == :obj
+      if params[:format] == :object
         workbook
       else
         output = StringIO.new
