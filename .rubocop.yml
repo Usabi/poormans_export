@@ -1,87 +1,28 @@
-require: rubocop-rails
-
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
   Exclude:
-    - "db/schema.rb"
-    - "spec/dummy/db/schema.rb"
-    - "config/initializers/simple_form*.rb"
-    - "vendor/**/*"
-    - "node_modules/**/*"
+    - "test/dummy/db/schema.rb"
     - "bin/*"
 
-# We want the Rails cop
-Rails:
-  Enabled: true
-
-# A top class comment is not needed.
 Style/Documentation:
   Enabled: false
 
-# Our factories don't treat procs the same way as blocks.
-Style/SymbolProc:
-  Exclude:
-    - "spec/factories/*"
-
-# Soft-wrap is a great invention
 Metrics/LineLength:
   Enabled: false
 
-# We like our specs to use the {} syntax
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - "spec/**/*.rb"
-
-# In specs and migrations it is allowed to update columns directly
-Rails/SkipsModelValidations:
-  Exclude:
-    - "spec/**/*.rb"
-    - "db/migrate/*.rb"
-
-# In migrations we subclass directly from ActiveRecord::Base
-Rails/ApplicationRecord:
-  Exclude:
-    - "db/migrate/*.rb"
-
-# Seeds might output
-Rails/Output:
-  Exclude:
-    - "db/seeds.rb"
-
 Metrics/BlockLength:
   Exclude:
-    - "spec/**/*.rb" # Specs just have large blocks
-    - "app/*/concerns/**/*.rb" # Concerns as well
-    - "config/routes.rb" # Route blocks are always long
-    - "db/migrate/*.rb" # Migrations can be a bit longer as well
-    - "*.gemspec" # Is just one block
-
-Metrics/MethodLength:
-  Exclude:
-    - "db/migrate/*.rb"
+    - "*.gemspec"
 
 Naming/FileName:
   Exclude:
     - "Gemfile"
     - "Rakefile"
-    - "spec/dummy/Rakefile"
+    - "test/dummy/Rakefile"
     - "*.gemspec"
 
-# Disabled due to difference in line endings between windows and linux, when using github all line endings are nomalized to LF
 Layout/EndOfLine:
   Enabled: false
 
-# Comments in Spanish are fine too
 Style/AsciiComments:
   Enabled: false
-
-Bundler/OrderedGems:
-    Enabled: false
-
-# Custom environments
-Rails/UnknownEnv:
-  Environments:
-    - production
-    - development
-    - test
-    - staging
