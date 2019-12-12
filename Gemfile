@@ -13,5 +13,25 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-# To use a debugger
-# gem 'byebug', group: [:development, :test]
+group :development, :test do
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'rails-controller-testing'
+  gem 'rspec-rails'
+  gem 'sqlite3', '~> 1.3', '< 1.4'
+end
+
+group :development do
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'shoulda-matchers', '4.0.0.rc1'
+  gem 'simplecov', require: false
+end
