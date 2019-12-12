@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
     'ialiendeg@gmail.com',
     'adan.alonso.s@gmail.com'
   ]
-  spec.homepage    = 'https://github.com/usabi'
+  spec.homepage    = 'https://github.com/Usabi/poormans_export'
   spec.summary     = 'A simple but powerful exporter'
   spec.description = 'Poorman\'s Export is a simple but powerful CSV and XLS exporter'
   spec.license     = 'MIT'
