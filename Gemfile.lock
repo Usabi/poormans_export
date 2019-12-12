@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     poormans_export (0.1.0)
-      rails (>= 4.2.0, < 5.2.3)
+      rails (>= 4.2.0, <= 5.2.3)
       spreadsheet (~> 1.0)
 
 GEM
