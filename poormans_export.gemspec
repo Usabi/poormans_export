@@ -14,13 +14,14 @@ Gem::Specification.new do |spec|
     'Ignacio Aliende García',
     'Adán Alonso Salvador'
   ]
-  spec.email = ["
+  spec.email = [
     'imobachgs@banot.net',
     'ialiendeg@gmail.com',
-    'adan.alonso.s@gmail.com"]
+    'adan.alonso.s@gmail.com'
+  ]
   spec.homepage    = 'https://github.com/usabi'
-  spec.summary     = 'A simple but powerful CSV exporter'
-  spec.description = 'A simple but powerful CSV exporter'
+  spec.summary     = 'A simple but powerful exporter'
+  spec.description = 'Poorman\'s Export is a simple but powerful CSV and XLS exporter'
   spec.license     = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -34,5 +35,6 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.add_dependency 'rails', '>= 5.0'
+  spec.add_dependency 'rails', ['>= 4.2.0', '< 5.2.3']
+  spec.add_dependency 'spreadsheet', '~> 1.0'
 end
