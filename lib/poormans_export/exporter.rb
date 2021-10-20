@@ -21,28 +21,14 @@ module PoormansExport
         end
       end
       @headers = headers
+      @header = get_header
     end
 
     def csv_string(params = {})
       options = { col_sep: ',' }
       options.merge! params
       csv_string = CSV.generate(options) do |csv|
-        if @collection.first.class.nil?
-          class_name = @collection
-        elsif @collection.first.class != NilClass
-          class_name = @collection.first.class
-        end
-
-        header = []
-        @head.each do |header_field|
-          header <<
-            if class_name
-              class_name.human_attribute_name(header_field.gsub(/_ids?/, ''))
-            else
-              header_field
-            end
-        end
-        csv << header
+        csv << @header
 
         @collection.each do |item|
           row_array = []
@@ -59,7 +45,6 @@ module PoormansExport
       template_path = params[:template]
       start_on_row = params[:start_on_row] || 0
       formats = params[:formats] || { 0 => { weight: :bold } }
-      formats[@headers.size + 1] = { weight: :bold } unless @headers.empty?
       workbook = params[:workbook]
       workbook ||=
         if template_path.present?
@@ -71,35 +56,7 @@ module PoormansExport
       sheet.name = params[:sheet_name] if params[:sheet_name]
       current_row = start_on_row
 
-      if @collection.first.class.nil?
-        class_name = @collection
-      elsif @collection.first.class != NilClass
-        class_name = @collection.first.class
-      end
-
-      unless @headers.empty?
-        if @headers[0]
-          sheet.row(current_row).concat [@headers[0]]
-          current_row += 1
-        end
-        sheet.row(current_row).concat [I18n.l(Time.zone.now, format: :compact)]
-        current_row += 1
-        if @headers[1]
-          sheet.row(current_row).concat [@headers[1]]
-          current_row += 1
-        end
-      end
-
-      header = []
-      @head.each do |header_field|
-        header <<
-          if class_name
-            class_name.human_attribute_name(header_field.gsub(/_ids?/, ''))
-          else
-            header_field
-          end
-      end
-      sheet.row(current_row).concat header
+      sheet.row(current_row).concat @header
       current_row += 1
 
       @collection.each do |item|
@@ -181,6 +138,31 @@ module PoormansExport
       else
         val
       end
+    end
+
+    private
+
+    def get_header
+      class_name =
+        if @collection.first.class.nil?
+          @collection
+        elsif @collection.first.class != NilClass
+          @collection.first.class
+        end
+      header = []
+      @head.each_with_index do |header_field, index|
+        header <<
+          if class_name
+            if @headers[index]
+              @headers[index]
+            else
+              class_name.human_attribute_name(header_field.gsub(/_ids?/, ''))
+            end
+          else
+            header_field
+          end
+      end
+      header
     end
   end
 end
